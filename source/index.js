@@ -38,13 +38,23 @@ function checkVersions (versions, ranges, group) {
 }
 
 /**
+ * @typedef {Object} PackageData
+ * @property {string} name
+ * @property {Array<string>} [keywords] - validated against {@link PluginLoader#keyword}
+ * @property {Array<string>} [platforms] - validated against `process.platform`
+ * @property {Object<string, string>} [engines] - validated against `process.versions`
+ * @property {Object<string, string>} [peerDependencies] - validated against {@link PluginLoader#versions}
+ */
+
+/**
  * @typedef {Object} PluginLoaderOptions
- * @property {string} [keyword]
- * @property {string} [prefix]
- * @property {Object<string, string>?} [versions]
- * @property {string} pluginPath
- * @property {BasePlugin} BasePlugin
- * @property {BasePlugin} PluginClass
+ * @property {string} [keyword] - used to set {@link PluginLoader#keyword}
+ * @property {string} [prefix] - used to set {@link PluginLoader#prefix}
+ * @property {Object<string, string>} [versions] - used to set {@link PluginLoader#versions}
+ * @property {string} [pluginPath] - used to set {@link PluginLoader#pluginPath}
+ * @property {PackageData} [packageData] - used to set {@link PluginLoader#packageData}
+ * @property {BasePlugin} BasePlugin - used to set {@link PluginLoader#BasePlugin}
+ * @property {BasePlugin} [PluginClass] - used to set {@link PluginLoader#PluginClass}
  */
 
 /**
@@ -54,93 +64,95 @@ function checkVersions (versions, ranges, group) {
 class PluginLoader {
 	constructor (opts) {
 		/**
-		 * A keyword, that if specified, will need to be specified by the plugin in order to be loaded
+		 * A keyword, that if specified the `keywords` field of {@link PluginLoader#packageData} must contain.
 		 * @type {string?}
 		 */
 		this.keyword = opts.keyword
 
 		/**
-		 * A prefix, that if specified, will need commence the plugin's package name
+		 * A prefix, that if specified the `name` field of {@link PluginLoader#packageData} must begin with.
 		 * @type {string?}
 		 */
 		this.prefix = opts.prefix
 
 		/**
-		 * A version map, that if specified, will need to be supported by the plugin's peer dependencies in order to be loaded
+		 * A version map, that if specified the `peerDependencies` field of {@link PluginLoader#packageData} must validate against.
 		 * @type {Object<string, string>?}
 		 */
 		this.versions = opts.versions || {}
 
 		/**
-		 * The Base Plugin Class
+		 * The Base Plugin class that {@link PluginLoader#PluginClass} must inherit from.
 		 * @type {BasePlugin}
 		 */
 		this.BasePlugin = opts.BasePlugin
 
 		/**
-		 * The absolute path to the plugin's directory
-		 * @type {string}
+		 * The absolute path to the plugin's directory.
+		 * Can be omitted, if {@link PluginLoader#packageData} and {@link PluginLoader#PluginClass} are specified manually.
+		 * @type {string?}
 		 */
-		this.pluginPath = opts.pluginPath
+		this.pluginPath = opts.pluginPath || null
 
 		/**
-		 * The path to the plugin's package.json file
-		 * @type {string}
+		 * An object of the essential plugin `package.json` properties.
+		 * If not specified, then it is the loaded data from the `package.json` file inside {@link PluginLoader#pluginPath}.
+		 * @type {PackageData}
 		 */
-		this.packagePath = pathUtil.resolve(this.pluginPath, 'package.json')
-
-		/**
-		 * The parsed contents of the plugin's package.json file
-		 * @type {string}
-		 */
-		this.packageData = require(this.packagePath)
+		this.packageData = opts.packageData || null
+		// load
+		if (!this.packageData) {
+			if (this.pluginPath) {
+				this.packageData = require(
+					pathUtil.resolve(this.pluginPath, 'package.json')
+				)
+			}
+			else {
+				throw new Errlop("Either the plugin's package data or the plugin's path must be specified.")
+			}
+		}
+		// ensure
 		if (!this.packageData.keywords) this.packageData.keywords = []
 		if (!this.packageData.platforms) this.packageData.platforms = []
 		if (!this.packageData.engines) this.packageData.engines = {}
 		if (!this.packageData.peerDependencies) this.packageData.peerDependencies = {}
-		// Validate
+		// validate
 		if (!this.packageData.name) {
-			throw new Errlop(`Plugin's package.json [${this.packagePath}] is missing a "name" field`)
-		}
-		if (!this.packageData.version) {
-			throw new Errlop(`Plugin's package.json [${this.packagePath}] is missing a "version" field`)
+			throw new Errlop('The plugin\'s package data must include a "name" field.')
 		}
 
 		/**
-		 * The plugin's name. Must be alphanumeric.
-		 * If not specified, defaults to the basename of the plugin path, with the prefix removed.
+		 * The plugin name. It is resolved by:
+		 *
+		 * 1. Loading the `name` field of {@link PluginLoader#packageData}.
+		 * 2. If {@link PluginLoader#prefix} is defined, verify the string starts with the prefix, then trim the prefix.
+		 * 3. Ensure the remaining string is alphanumeric only, to avoid common naming problems.
+		 *
 		 * @type {string}
+		 * @protected
+		 * @readonly
 		 */
 		this.pluginName = this.packageData.name
+		// validate
 		if (this.prefix) {
 			if (this.pluginName.startsWith(this.prefix)) {
 				this.pluginName = this.pluginName.substr(this.prefix.length)
 			}
 			else {
-				throw new Errlop(`Plugin's package.json [${this.packagePath}] does not start with the required prefix [${this.prefix}]`)
+				throw new Errlop(`The plugin's name of [${this.pluginName}] must begin with the prefix [${this.prefix}].`)
 			}
 		}
 		if (alphanumeric.test(this.pluginName) === false) {
-			throw new Errlop(`Plugin's name must be alphanumeric: ${this.pluginName}`)
+			throw new Errlop(`The plugin's name of [${this.pluginName}] must be alphanumeric to avoid common naming problems.`)
 		}
 
 		/**
-		 * The version of the plugin
-		 * @type {string}
-		 */
-		this.pluginVersion = this.packageData.version
-
-		/**
-		 * The path to the plugin's main file
-		 * @type {string}
-		 */
-		this.pluginMainPath = pathUtil.resolve(this.pluginPath, this.packageData.main)
-
-		/**
-		 * The Base Plugin Class
+		 * The Plugin Class.
+		 * If not specified, then it is resolved by requiring {@link PluginLoader#pluginPath}.
 		 * @type {BasePlugin}
 		 */
 		this.PluginClass = null
+		// ensure
 		if (opts.PluginClass) {
 			if (this.isPluginClass(opts.PluginClass) === false) {
 				throw this.error('The specified PluginClass did not inherit from the specified BasePlugin.')
@@ -148,7 +160,7 @@ class PluginLoader {
 			this.PluginClass = opts.PluginClass
 		}
 		else {
-			const direct = require(this.pluginMainPath)
+			const direct = require(this.pluginPath)
 			if (this.isPluginClass(direct)) {
 				// module.exports = class MyPlugin extends require('...-baseplugin') {}
 				this.PluginClass = direct
@@ -160,7 +172,7 @@ class PluginLoader {
 					this.PluginClass = indirect
 				}
 				else {
-					throw this.error(`The resolved PluginClass from [${this.pluginMainPath}] did not inherit from the specified BasePlugin.`)
+					throw this.error('The resolved PluginClass does not inherit from the specified BasePlugin.')
 				}
 			}
 		}
@@ -231,33 +243,32 @@ class PluginLoader {
 	 */
 	error (message, parent) {
 		return new Errlop(
-			message + '\nPlugin: ' + this.pluginPath,
+			`${message}\nPlugin: ${this.pluginPath || this.pluginName}`,
 			parent
 		)
 	}
 
 	/**
-	 * Instantiate the {@link PluginLoader#PluginClass} with the arguments
+	 * Instantiate the {@link PluginLoader#PluginClass} with the arguments.
 	 * @param {...*} arguments to forward to the plugin class constructor
 	 * @returns {BasePlugin} the instantiation result
 	 * @throws {Errlop} instantiation failure reason
 	 */
 	create (...args) {
 		try {
-			const plugin = new (this.PluginClass)(...args)
+			// create the plugin
+			const plugin = new this.PluginClass(...args)
 
-			// ensure name and version are correct
-			if (plugin.name) {
-				if (plugin.name !== this.pluginName) {
-					throw new Error(`Plugin instance's "name" [${plugin.name}] did not match the expectation of [${this.pluginName}]`)
-				}
+			// ensure name is correct if specified
+			if (plugin.name && plugin.name !== this.pluginName) {
+				throw new Error(`The plugin instance's "name" of [${plugin.name}] must match the specified name of [${this.pluginName}].`)
 			}
-			else {
-				plugin.name = this.pluginName
-			}
+
+			// return the plugin
+			return plugin
 		}
 		catch (err) {
-			throw new Errlop(`Plugin [${this.pluginPath}] failed to instantiate.`, err)
+			throw new Errlop(`Plugin [${this.pluginPath || this.pluginName}] failed to instantiate.`, err)
 		}
 	}
 
