@@ -68,7 +68,7 @@ Create your plugin:
 1. `index.js` to:
 
     ``` javascript
-    module.exports = functionn (BasePlugin) {
+    module.exports = function (BasePlugin) {
         return class MyPlugin extends BasePlugin {
             constructor (...args) {
                 super(...args)
