@@ -66,10 +66,12 @@ Create your plugin:
 1. `index.js` to:
 
     ``` javascript
-    return class MyPlugin extends BasePlugin {
-        constructor (...args) {
-            super(...args)
-            console.log('hello from my plugin')
+    module.exports = functionn (BasePlugin) {
+        return class MyPlugin extends BasePlugin {
+            constructor (...args) {
+                super(...args)
+                console.log('hello from my plugin')
+            }
         }
     }
     ```
