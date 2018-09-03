@@ -135,7 +135,8 @@ class PluginLoader {
 		this.pluginName = this.packageData.name
 		// validate
 		if (this.prefix) {
-			if (this.pluginName.startsWith(this.prefix)) {
+			// .startsWith is only available node >= 0.12
+			if (this.pluginName.indexOf(this.prefix) === 0) {
 				this.pluginName = this.pluginName.substr(this.prefix.length)
 			}
 			else {
