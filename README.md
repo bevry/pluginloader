@@ -53,6 +53,8 @@ A class for loading, verifying, and creating plugins. Used by DocPad for years.
 
 [Complete API Documentation.](http://master.pluginloader.bevry.surge.sh/docs/)
 
+### Basics
+
 Create your project:
 
 1. `mkdir my-project`
@@ -103,6 +105,13 @@ Create your plugin loader:
 Run the project:
 
 1. `node myapp/index.js`
+
+
+### Ecosystem
+
+- [pluginclerk](https://github.com/bevry/pluginclerk) a project for fetching compatible plugins from the npm registry
+- [docpad-baseplugin](https://github.com/docpad/docpad-baseplugin) the BasePlugin class that DocPad uses
+- [docpad-plugintester](https://github.com/docpad/docpad-plugintester) testing helpers for DocPad plugins
 
 
 <!-- HISTORY/ -->
