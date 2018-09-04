@@ -39,7 +39,9 @@
   "maintainers": [
     "Benjamin Lupton <b@lupton.cc>"
   ],
-  "contributors": [],
+  "contributors": [
+    "Benjamin Lupton (http://balupton.com)"
+  ],
   "bugs": {
     "url": "https://github.com/bevry/pluginloader/issues"
   },
@@ -81,12 +83,10 @@
   ],
   "main": "index.js",
   "dependencies": {
-    "baseplugin": "^1.0.2",
     "editions": "^2.0.2",
     "errlop": "^1.0.3",
     "safefs": "^4.1.0",
-    "semver": "^5.5.1",
-    "valid-filename": "^2.0.1"
+    "semver": "^5.5.1"
   },
   "devDependencies": {
     "assert-helpers": "^4.5.1",
@@ -101,7 +101,7 @@
     "valid-directory": "^1.0.0"
   },
   "scripts": {
-    "our:clean": "rm -Rf ./docs ./edition:* ./es2015 ./es5 ./out",
+    "our:clean": "rm -Rf ./docs ./edition* ./es2015 ./es5 ./out",
     "our:compile": "npm run our:compile:edition-node-0.10",
     "our:compile:edition-node-0.10": "env BABEL_ENV=edition-node-0.10 babel --out-dir ./edition-node-0.10 ./source",
     "our:deploy": "echo no need for this project",
