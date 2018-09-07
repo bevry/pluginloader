@@ -6,6 +6,7 @@ const pathUtil = require('path')
 // External
 const Errlop = require('errlop')
 const semver = require('semver')
+const typeChecker = require('typechecker')
 
 // Local
 const alphanumeric = /^[a-z0-9]+$/
@@ -155,21 +156,21 @@ class PluginLoader {
 		this.PluginClass = null
 		// ensure
 		if (opts.PluginClass) {
-			if (this.isPluginClass(opts.PluginClass) === false) {
+			if (typeChecker.isClass(opts.PluginClass) === false) {
 				throw this.error('The specified PluginClass did not inherit from the specified BasePlugin.')
 			}
 			this.PluginClass = opts.PluginClass
 		}
 		else {
 			const direct = require(this.pluginPath)
-			if (this.isPluginClass(direct)) {
+			if (typeChecker.isClass(direct)) {
 				// module.exports = class MyPlugin extends require('...-baseplugin') {}
 				this.PluginClass = direct
 			}
 			else {
 				// module.exports = (BasePlugin) -> class MyPlugin extends BasePlugin {}
 				const indirect = direct(this.BasePlugin)
-				if (this.isPluginClass(indirect)) {
+				if (typeChecker.isClass(indirect)) {
 					this.PluginClass = indirect
 				}
 				else {
@@ -217,22 +218,6 @@ class PluginLoader {
 		}
 
 		return true
-	}
-
-	/**
-	 * Does the passed class inherit from the BasePlugin?
-	 * @param {BasePlugin} klass
-	 * @returns {boolean}
-	 * @protected
-	 */
-	isPluginClass (klass) {
-		while (klass) {
-			if (klass === this.BasePlugin || klass instanceof this.BasePlugin) {
-				return true
-			}
-			klass = klass.prototype
-		}
-		return false
 	}
 
 	/**
