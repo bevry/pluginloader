@@ -49,6 +49,7 @@ function checkVersions (versions, ranges, group) {
 
 /**
  * @typedef {Object} PluginLoaderOptions
+ * @property {function} [log] - used to output debug messages if it exists
  * @property {string} [keyword] - used to set {@link PluginLoader#keyword}
  * @property {string} [prefix] - used to set {@link PluginLoader#prefix}
  * @property {Object<string, string>} [versions] - used to set {@link PluginLoader#versions}
@@ -64,6 +65,14 @@ function checkVersions (versions, ranges, group) {
  */
 class PluginLoader {
 	constructor (opts) {
+		/**
+		 * A method, that if specified, will be used to output debug messages.
+		 * @type {function?}
+		 * @param {...*} args
+		 * @returns {void}
+		 */
+		this.log = opts.log || function () { }
+
 		/**
 		 * A keyword, that if specified the `keywords` field of {@link PluginLoader#packageData} must contain.
 		 * @type {string?}
@@ -156,25 +165,50 @@ class PluginLoader {
 		this.PluginClass = null
 		// ensure
 		if (opts.PluginClass) {
-			if (typeChecker.isClass(opts.PluginClass) === false) {
-				throw this.error('The specified PluginClass did not inherit from the specified BasePlugin.')
+			if (typeChecker.isClass(opts.PluginClass)) {
+				this.PluginClass = opts.PluginClass
 			}
-			this.PluginClass = opts.PluginClass
+			else {
+				throw this.error('The specified PluginClass was not detectable as a class.')
+			}
 		}
 		else {
 			const direct = require(this.pluginPath)
 			if (typeChecker.isClass(direct)) {
 				// module.exports = class MyPlugin extends require('...-baseplugin') {}
+				this.log('debug', `The plugin [${this.pluginPath}] was resolved directly`)
 				this.PluginClass = direct
 			}
 			else {
 				// module.exports = (BasePlugin) -> class MyPlugin extends BasePlugin {}
-				const indirect = direct(this.BasePlugin)
-				if (typeChecker.isClass(indirect)) {
-					this.PluginClass = indirect
+				let indirect = null
+				try {
+					indirect = direct(this.BasePlugin)
 				}
-				else {
-					throw this.error('The resolved PluginClass does not inherit from the specified BasePlugin.')
+				catch (err) {
+					if ((/Class constructor \w+ cannot be invoked without 'new'/).test(err.message)) {
+						// for some reason, typeChecker.isClass(direct) returned `false`, this should not happen
+						this.log('warn', this.error(
+							'pluginloader encountered a direct result that had a false negative with class detection\n' +
+							'everything will work fine, but this should be fixed by the plugin author\n' +
+							'the direct result in question is:\n' +
+							direct.toString()
+						))
+						this.log('debug', `The plugin [${this.pluginPath}] was resolved directly, via false negative fallback`)
+						this.PluginClass = direct
+					}
+					else {
+						throw this.error('The indirect resolution of the PluginClass failed.', err)
+					}
+				}
+				if (this.PluginClass == null) {
+					if (typeChecker.isClass(indirect)) {
+						this.log('debug', `The plugin [${this.pluginPath}] was resolved indirectly`)
+						this.PluginClass = indirect
+					}
+					else {
+						throw this.error('The resolved PluginClass was not detectable as a class.')
+					}
 				}
 			}
 		}
@@ -241,9 +275,12 @@ class PluginLoader {
 	 * @throws {Errlop} instantiation failure reason
 	 */
 	create (...args) {
+		// prepare
+		const { PluginClass } = this
+
 		try {
 			// create the plugin
-			const plugin = new this.PluginClass(...args)
+			const plugin = new PluginClass(...args)
 
 			// ensure name is correct if specified
 			if (plugin.name && plugin.name !== this.pluginName) {
