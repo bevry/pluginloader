@@ -1,5 +1,8 @@
 # History
 
+## v1.1.2 2018 October 1
+- Fixed `PluginClass` as option not supporting plugin resolvers
+
 ## v1.1.1 2018 September 8
 - Added support for logging to help debug resolution errors
 - Added a fallback in case type checker provided a false negative on class testing

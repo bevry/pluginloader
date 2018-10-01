@@ -1,6 +1,6 @@
 {
   "name": "@bevry/pluginloader",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A class for loading, verifying, and creating plugins. Used by DocPad for years.",
   "homepage": "https://github.com/bevry/pluginloader",
   "license": "MIT",

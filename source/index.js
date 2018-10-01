@@ -12,6 +12,14 @@ const typeChecker = require('typechecker')
 const alphanumeric = /^[a-z0-9]+$/
 
 /**
+ * Receive the BasePlugin class and return a class that extended it.
+ * @typedef {function} BasePluginResolver
+ * @param {BasePlugin} BasePlugin
+ * @returns {BasePlugin} ExtendedBasePlugin
+ * @example module.exports = (BasePlugin) => class MyPlugin extends BasePlugin {}
+ */
+
+/**
  * Check the speified versions against the specified ranges
  * @param {Object<string, string>} versions
  * @param {Object<string, string>} ranges
@@ -56,7 +64,7 @@ function checkVersions (versions, ranges, group) {
  * @property {string} [pluginPath] - used to set {@link PluginLoader#pluginPath}
  * @property {PackageData} [packageData] - used to set {@link PluginLoader#packageData}
  * @property {BasePlugin} BasePlugin - used to set {@link PluginLoader#BasePlugin}
- * @property {BasePlugin} [PluginClass] - used to set {@link PluginLoader#PluginClass}
+ * @property {BasePlugin|BasePluginResolver} [PluginClass] - used to set {@link PluginLoader#PluginClass}
  */
 
 /**
@@ -162,59 +170,55 @@ class PluginLoader {
 		 * If not specified, then it is resolved by requiring {@link PluginLoader#pluginPath}.
 		 * @type {BasePlugin}
 		 */
-		this.PluginClass = null
-		// ensure
-		if (opts.PluginClass) {
-			if (typeChecker.isClass(opts.PluginClass)) {
-				this.PluginClass = opts.PluginClass
-			}
-			else {
-				throw this.error('The specified PluginClass was not detectable as a class.')
-			}
-		}
-		else {
-			const direct = require(this.pluginPath)
-			if (typeChecker.isClass(direct)) {
-				// module.exports = class MyPlugin extends require('...-baseplugin') {}
-				this.log('debug', `The plugin [${this.pluginPath}] was resolved directly`)
-				this.PluginClass = direct
-			}
-			else {
-				// module.exports = (BasePlugin) -> class MyPlugin extends BasePlugin {}
-				let indirect = null
-				try {
-					indirect = direct(this.BasePlugin)
-				}
-				catch (err) {
-					if ((/Class constructor \w+ cannot be invoked without 'new'/).test(err.message)) {
-						// for some reason, typeChecker.isClass(direct) returned `false`, this should not happen
-						this.log('warn', this.error(
-							'pluginloader encountered a direct result that had a false negative with class detection\n' +
-							'everything will work fine, but this should be fixed by the plugin author\n' +
-							'the direct result in question is:\n' +
-							direct.toString()
-						))
-						this.log('debug', `The plugin [${this.pluginPath}] was resolved directly, via false negative fallback`)
-						this.PluginClass = direct
-					}
-					else {
-						throw this.error('The indirect resolution of the PluginClass failed.', err)
-					}
-				}
-				if (this.PluginClass == null) {
-					if (typeChecker.isClass(indirect)) {
-						this.log('debug', `The plugin [${this.pluginPath}] was resolved indirectly`)
-						this.PluginClass = indirect
-					}
-					else {
-						throw this.error('The resolved PluginClass was not detectable as a class.')
-					}
-				}
-			}
-		}
+		this.PluginClass = this.resolve(opts.PluginClass || require(this.pluginPath))
 
 		// Validate
 		this.validate()
+	}
+
+	/**
+	 * Resolve the input as the plugin class
+	 * @param {BasePlugin|BasePluginResolver} direct
+	 * @returns {BasePlugin} PluginClass
+	 * @throws {Errlop} resolve failure reason
+	 * @private
+	 */
+	resolve (direct) {
+		if (typeChecker.isClass(direct)) {
+			// module.exports = class MyPlugin extends require('...-baseplugin') {}
+			this.log('debug', `The plugin [${this.pluginPath}] was resolved directly`)
+			return direct
+		}
+		else {
+			// module.exports = (BasePlugin) -> class MyPlugin extends BasePlugin {}
+			let indirect = null
+			try {
+				indirect = direct(this.BasePlugin)
+			}
+			catch (err) {
+				if ((/Class constructor \w+ cannot be invoked without 'new'/).test(err.message)) {
+					// for some reason, typeChecker.isClass(direct) returned `false`, this should not happen
+					this.log('warn', this.error(
+						'pluginloader encountered a direct result that had a false negative with class detection\n' +
+						'everything will work fine, but this should be fixed by the plugin author\n' +
+						'the direct result in question is:\n' +
+						direct.toString()
+					))
+					this.log('debug', `The plugin [${this.pluginPath}] was resolved directly, via false negative fallback`)
+					return direct
+				}
+				else {
+					throw this.error('The indirect resolution of the PluginClass failed.', err)
+				}
+			}
+			if (typeChecker.isClass(indirect)) {
+				this.log('debug', `The plugin [${this.pluginPath}] was resolved indirectly`)
+				return indirect
+			}
+			else {
+				throw this.error('The resolved PluginClass was not detectable as a class.')
+			}
+		}
 	}
 
 	/**
