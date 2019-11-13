@@ -85,7 +85,7 @@
   "dependencies": {
     "editions": "^2.0.2",
     "errlop": "^1.0.3",
-    "semver": "^5.5.1",
+    "semver": "^6.3.0",
     "typechecker": "^4.6.0"
   },
   "devDependencies": {
