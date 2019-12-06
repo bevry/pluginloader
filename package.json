@@ -86,7 +86,7 @@
     "editions": "^2.0.2",
     "errlop": "^1.0.3",
     "semver": "^5.5.1",
-    "typechecker": "^4.6.0"
+    "typechecker": "^6.0.0"
   },
   "devDependencies": {
     "assert-helpers": "^4.5.1",
