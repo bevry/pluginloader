@@ -1,15 +1,25 @@
 # History
 
+## v2.0.0 2019 December 7
+
+-   Converted to TypeScript
+-   Updated dependencies, [base files](https://github.com/bevry/base), and [editions](https://editions.bevry.me) using [boundation](https://github.com/bevry/boundation)
+-   Minimum required node version changed from `node: >=0.10` to `node: >=8` to keep up with mandatory ecosystem changes
+
 ## v1.1.2 2018 October 1
-- Fixed `PluginClass` as option not supporting plugin resolvers
+
+-   Fixed `PluginClass` as option not supporting plugin resolvers
 
 ## v1.1.1 2018 September 8
-- Added support for logging to help debug resolution errors
-- Added a fallback in case type checker provided a false negative on class testing
-- Updated `typechecker` dependency from v4.5.0 to v4.6.0
+
+-   Added support for logging to help debug resolution errors
+-   Added a fallback in case type checker provided a false negative on class testing
+-   Updated `typechecker` dependency from v4.5.0 to v4.6.0
 
 ## v1.1.0 2018 September 8
-- Removed `isPluginClass` for `require('typechecker').isClass` as strict checking on this resulted in too many false negatives due to different baseplugin versions or locations being used between plugins and apps
+
+-   Removed `isPluginClass` for `require('typechecker').isClass` as strict checking on this resulted in too many false negatives due to different baseplugin versions or locations being used between plugins and apps
 
 ## v1.0.0 2018 September 4
-- Initial working release
+
+-   Initial working release
