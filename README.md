@@ -93,12 +93,14 @@ Create your plugin loader:
 1. `index.js` to:
 
     ``` javascript
+    import PluginLoader from '@bevry/pluginloader'
+    
     class BasePlugin {
         constructor () {
             console.log('hello from base plugin')
         }
     }
-    const PluginLoader = require('@bevry/pluginloader')
+    
     const pluginLoader = new PluginLoader({
         BasePlugin,
         pluginPath: require('path').resolve(__dirname, '..', 'myplugin')
