@@ -33,27 +33,6 @@ A class for loading, verifying, and creating plugins. Used by DocPad for years.
 <!-- /DESCRIPTION -->
 
 
-<!-- INSTALL/ -->
-
-<h2>Install</h2>
-
-<a href="https://npmjs.com" title="npm is a package manager for javascript"><h3>npm</h3></a>
-<ul>
-<li>Install: <code>npm install --save @bevry/pluginloader</code></li>
-<li>Require: <code>require('@bevry/pluginloader')</code></li>
-</ul>
-
-<h3><a href="https://editions.bevry.me" title="Editions are the best way to produce and consume packages you care about.">Editions</a></h3>
-
-<p>This package is published with the following editions:</p>
-
-<ul><li><code>@bevry/pluginloader/source/index.ts</code> is typescript source code with import for modules</li>
-<li><code>@bevry/pluginloader</code> aliases <code>@bevry/pluginloader/edition-node-12/index.js</code></li>
-<li><code>@bevry/pluginloader/edition-node-12/index.js</code> is typescript compiled for node.js 12 with require for modules</li></ul>
-
-<!-- /INSTALL -->
-
-
 ## Usage
 
 [Complete API Documentation.](http://master.pluginloader.bevry.surge.sh/docs/)
@@ -119,6 +98,30 @@ Run the project:
 - [pluginclerk](https://github.com/bevry/pluginclerk) a project for fetching compatible plugins from the npm registry
 - [docpad-baseplugin](https://github.com/docpad/docpad-baseplugin) the BasePlugin class that DocPad uses
 - [docpad-plugintester](https://github.com/docpad/docpad-plugintester) testing helpers for DocPad plugins
+
+
+
+
+<!-- INSTALL/ -->
+
+<h2>Install</h2>
+
+<a href="https://npmjs.com" title="npm is a package manager for javascript"><h3>npm</h3></a>
+<ul>
+<li>Install: <code>npm install --save @bevry/pluginloader</code></li>
+<li>Import: <code>import pkg from ('@bevry/pluginloader')</code></li>
+<li>Require: <code>const pkg = require('@bevry/pluginloader').default</code></li>
+</ul>
+
+<h3><a href="https://editions.bevry.me" title="Editions are the best way to produce and consume packages you care about.">Editions</a></h3>
+
+<p>This package is published with the following editions:</p>
+
+<ul><li><code>@bevry/pluginloader/source/index.ts</code> is <a href="https://www.typescriptlang.org/" title="TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. ">TypeScript</a> source code with <a href="https://babeljs.io/docs/learn-es2015/#modules" title="ECMAScript Modules">Import</a> for modules</li>
+<li><code>@bevry/pluginloader</code> aliases <code>@bevry/pluginloader/edition-esnext/index.js</code></li>
+<li><code>@bevry/pluginloader/edition-esnext/index.js</code> is <a href="https://www.typescriptlang.org/" title="TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. ">TypeScript</a> compiled against <a href="https://en.wikipedia.org/wiki/ECMAScript#ES.Next" title="ECMAScript Next">ESNext</a> for <a href="https://nodejs.org" title="Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine">Node.js</a> with <a href="https://nodejs.org/dist/latest-v5.x/docs/api/modules.html" title="Node/CJS Modules">Require</a> for modules</li></ul>
+
+<!-- /INSTALL -->
 
 
 <!-- HISTORY/ -->

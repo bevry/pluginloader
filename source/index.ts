@@ -1,7 +1,7 @@
 // Import
 import pathUtil from 'path'
 import Errlop from 'errlop'
-import semver from 'semver'
+import satisfies from 'semver/functions/satisfies.js'
 import * as typeChecker from 'typechecker'
 
 // Local
@@ -45,7 +45,7 @@ function checkVersions(versions: Versions, ranges: Ranges, group: string) {
 				// the .replace is to support version flags, such as -beta
 				const version = String(versions[thing]).replace(/-.+/, '')
 				const range = ranges[thing]
-				if (range && semver.satisfies(version, range) === false) {
+				if (range && satisfies(version, range) === false) {
 					errors.push(
 						new Errlop(
 							`${group} [${thing} = ${range}] unsupported by plugin's range [${range}]`
