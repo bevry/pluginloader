@@ -2,7 +2,7 @@
 
 module.exports = function (BasePlugin) {
 	return class IndirectPlugin extends BasePlugin {
-		constructor (...args) {
+		constructor(...args) {
 			super(...args)
 			console.log('hello from indirect plugin')
 		}

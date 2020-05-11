@@ -5,8 +5,8 @@ import PluginLoader from './index.js'
 import BasePlugin from '../test-fixtures/baseplugin.js'
 
 // Tests
-kava.suite('pluginloader', function(suite) {
-	suite('memory', function(suite, test) {
+kava.suite('pluginloader', function (suite) {
+	suite('memory', function (suite, test) {
 		class BasePlugin {
 			constructor() {
 				console.log('hello from base plugin')
@@ -21,49 +21,49 @@ kava.suite('pluginloader', function(suite) {
 				console.log('hello from manual plugin')
 			}
 		}
-		test('manual', function() {
+		test('manual', function () {
 			PluginLoader.create({
 				packageData: {
-					name: 'manualplugin'
+					name: 'manualplugin',
 				},
 				BasePlugin,
-				PluginClass: ManualPlugin
+				PluginClass: ManualPlugin,
 			}).create()
 		})
-		test('name-failure', function() {
+		test('name-failure', function () {
 			try {
 				PluginLoader.create({
 					packageData: {
-						name: 'inconsistent'
+						name: 'inconsistent',
 					},
 					BasePlugin,
-					PluginClass: ManualPlugin
+					PluginClass: ManualPlugin,
 				}).create()
 				throw new Error('should not have reached here')
 			} catch (err) {
 				errorEqual(err.stack.toString(), 'must match the specified name of')
 			}
 		})
-		suite('prefix', function(suite, test) {
-			test('success', function() {
+		suite('prefix', function (suite, test) {
+			test('success', function () {
 				PluginLoader.create({
 					prefix: 'my-',
 					packageData: {
-						name: 'my-manualplugin'
+						name: 'my-manualplugin',
 					},
 					BasePlugin,
-					PluginClass: ManualPlugin
+					PluginClass: ManualPlugin,
 				}).create()
 			})
-			test('failure', function() {
+			test('failure', function () {
 				try {
 					PluginLoader.create({
 						prefix: 'our-',
 						packageData: {
-							name: 'my-manualplugin'
+							name: 'my-manualplugin',
 						},
 						BasePlugin,
-						PluginClass: ManualPlugin
+						PluginClass: ManualPlugin,
 					})
 					throw new Error('should not have reached here')
 				} catch (err) {
@@ -72,10 +72,10 @@ kava.suite('pluginloader', function(suite) {
 			})
 		})
 	})
-	suite('file', function(suite, test) {
+	suite('file', function (suite, test) {
 		// test local file
 		console.log('skipping base plugin tests')
-		test('directplugin', function() {
+		test('directplugin', function () {
 			PluginLoader.create({
 				BasePlugin,
 				pluginPath: pathUtil.resolve(
@@ -83,10 +83,10 @@ kava.suite('pluginloader', function(suite) {
 					'..',
 					'test-fixtures',
 					'directplugin'
-				)
+				),
 			}).create()
 		})
-		test('indirectplugin', function() {
+		test('indirectplugin', function () {
 			PluginLoader.create({
 				BasePlugin,
 				pluginPath: pathUtil.resolve(
@@ -94,7 +94,7 @@ kava.suite('pluginloader', function(suite) {
 					'..',
 					'test-fixtures',
 					'indirectplugin'
-				)
+				),
 			}).create()
 		})
 	})

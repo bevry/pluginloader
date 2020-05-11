@@ -121,7 +121,7 @@ export default class PluginLoader<BasePlugin> {
 	PluginClass: BasePlugin
 
 	constructor(opts: PluginLoaderOptions<BasePlugin>) {
-		this.log = opts.log || function() {}
+		this.log = opts.log || function () {}
 		this.keyword = opts.keyword
 		this.prefix = opts.prefix
 		this.versions = opts.versions || {}
@@ -298,7 +298,7 @@ export default class PluginLoader<BasePlugin> {
 				`Plugin [${this.pluginPath}] is unsupported.`,
 				errors.length === 1
 					? errors[0]
-					: new Errlop(errors.map(error => error.stack).join('\n'))
+					: new Errlop(errors.map((error) => error.stack).join('\n'))
 			)
 		}
 

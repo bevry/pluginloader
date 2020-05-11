@@ -35,7 +35,7 @@ A class for loading, verifying, and creating plugins. Used by DocPad for years.
 
 ## Usage
 
-[Complete API Documentation.](http://master.pluginloader.bevry.surge.sh/docs/)
+[Complete API Documentation.](http://master.pluginloader.bevry.surge.sh/docs/globals.html)
 
 ### Basics
 
@@ -51,10 +51,10 @@ Create your plugin:
 1. `npm init`
 1. `index.js` to:
 
-    ``` javascript
+    ```javascript
     module.exports = function (BasePlugin) {
         return class MyPlugin extends BasePlugin {
-            constructor (...args) {
+            constructor(...args) {
                 super(...args)
                 console.log('hello from my plugin')
             }
@@ -71,18 +71,18 @@ Create your plugin loader:
 1. `npm init`
 1. `index.js` to:
 
-    ``` javascript
+    ```javascript
     import PluginLoader from '@bevry/pluginloader'
-    
+
     class BasePlugin {
-        constructor () {
+        constructor() {
             console.log('hello from base plugin')
         }
     }
-    
+
     const pluginLoader = new PluginLoader({
         BasePlugin,
-        pluginPath: require('path').resolve(__dirname, '..', 'myplugin')
+        pluginPath: require('path').resolve(__dirname, '..', 'myplugin'),
     })
     ```
 
@@ -92,15 +92,11 @@ Run the project:
 
 1. `node myapp/index.js`
 
-
 ### Ecosystem
 
-- [pluginclerk](https://github.com/bevry/pluginclerk) a project for fetching compatible plugins from the npm registry
-- [docpad-baseplugin](https://github.com/docpad/docpad-baseplugin) the BasePlugin class that DocPad uses
-- [docpad-plugintester](https://github.com/docpad/docpad-plugintester) testing helpers for DocPad plugins
-
-
-
+-   [pluginclerk](https://github.com/bevry/pluginclerk) a project for fetching compatible plugins from the npm registry
+-   [docpad-baseplugin](https://github.com/docpad/docpad-baseplugin) the BasePlugin class that DocPad uses
+-   [docpad-plugintester](https://github.com/docpad/docpad-plugintester) testing helpers for DocPad plugins
 
 <!-- INSTALL/ -->
 
@@ -170,7 +166,7 @@ No sponsors yet! Will you be the first?
 
 These amazing people have contributed code to this project:
 
-<ul><li><a href="http://balupton.com">Benjamin Lupton</a> — <a href="https://github.com/bevry/pluginloader/commits?author=balupton" title="View the GitHub contributions of Benjamin Lupton on repository bevry/pluginloader">view contributions</a></li></ul>
+<ul><li><a href="https://github.com/balupton">Benjamin Lupton</a> — <a href="https://github.com/bevry/pluginloader/commits?author=balupton" title="View the GitHub contributions of Benjamin Lupton on repository bevry/pluginloader">view contributions</a></li></ul>
 
 <a href="https://github.com/bevry/pluginloader/blob/master/CONTRIBUTING.md#files">Discover how you can contribute by heading on over to the <code>CONTRIBUTING.md</code> file.</a>
 

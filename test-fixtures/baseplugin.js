@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = class BasePlugin {
-	constructor () {
+	constructor() {
 		console.log('hello from base plugin')
 	}
 }
