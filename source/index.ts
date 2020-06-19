@@ -1,5 +1,5 @@
 // Import
-import pathUtil from 'path'
+import * as pathUtil from 'path'
 import Errlop from 'errlop'
 import satisfies from 'semver/functions/satisfies.js'
 import * as typeChecker from 'typechecker'
