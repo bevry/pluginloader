@@ -1,4 +1,4 @@
-import pathUtil from 'path'
+import * as pathUtil from 'path'
 import { errorEqual } from 'assert-helpers'
 import kava from 'kava'
 import PluginLoader from './index.js'
