@@ -98,7 +98,7 @@
   "type": "commonjs",
   "main": "edition-esnext/index.js",
   "dependencies": {
-    "errlop": "3.5.0",
+    "errlop": "3.9.0",
     "semver": "^7.3.2",
     "typechecker": "7.5.0"
   },
