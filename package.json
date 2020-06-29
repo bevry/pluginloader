@@ -100,7 +100,7 @@
   "dependencies": {
     "errlop": "3.10.0",
     "semver": "^7.3.2",
-    "typechecker": "7.10.0"
+    "typechecker": "7.11.0"
   },
   "devDependencies": {
     "@bevry/update-contributors": "^1.12.0",
