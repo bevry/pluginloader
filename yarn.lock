@@ -1689,10 +1689,10 @@ readable-stream@^3.0.1:
     string_decoder "^1.1.1"
     util-deprecate "^1.0.1"
 
-readdir-cluster@^3.5.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/readdir-cluster/-/readdir-cluster-3.8.0.tgz#35a17417dc421453a659cc48cb8114156c61201d"
-  integrity sha512-yozJcvfnxS7UW38LvYG6zRFvh+JOaorjqFu/jpxjINtlJxuLcJe6J5ojLx7w6qwTDLbf+rAmsINbPQO802suYw==
+readdir-cluster@^3.11.0:
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/readdir-cluster/-/readdir-cluster-3.11.0.tgz#dfc147b790d8fea276213febc17a09705c32f586"
+  integrity sha512-+wHKSXkodkiBbgdpxvY6PE1pfiyaLwlUtO7S2gmnLIwvZE673PVheDdfDRdJvnSopBxn1vtA8fsV3kuJDSahrg==
 
 rechoir@^0.6.2:
   version "0.6.2"
@@ -2251,11 +2251,11 @@ v8-compile-cache@^2.0.3:
   integrity sha512-8OQ9CL+VWyt3JStj7HX7/ciTL2V3Rl1Wf5OL+SNTm0yK1KvtReVulksyeRnCANHHuUxHlQig+JJDlUhBt1NQDQ==
 
 valid-directory@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/valid-directory/-/valid-directory-2.5.0.tgz#239cf39e5c05403d8b6fbd23aa45dc20c242035c"
-  integrity sha512-j/cLzLu/7FHC1UQwExHfvqgh72j+a9goxxAOz07O1awWoMXiJymqVHJ4K7GVeeNhfZKwOaa548OnYgOVOeLMWw==
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/valid-directory/-/valid-directory-2.8.0.tgz#8ed61ef015c30637dc613e84d51394addf8e9c7f"
+  integrity sha512-SoWpPyDZ65+cD9YwVGoolA6L1mUN5syC6s8o0FnC4tqNbPez/hlhQszKwHVkfW7a77rKrd7qDA+IVEFLkUPYig==
   dependencies:
-    readdir-cluster "^3.5.0"
+    readdir-cluster "^3.11.0"
     valid-filename "^3.1.0"
 
 valid-filename@^3.1.0:
