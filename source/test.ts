@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as pathUtil from 'path'
 import { errorEqual } from 'assert-helpers'
 import kava from 'kava'
@@ -13,6 +14,7 @@ kava.suite('pluginloader', function (suite) {
 			}
 		}
 		class ManualPlugin extends BasePlugin {
+			// eslint-disable-next-line class-methods-use-this
 			get name() {
 				return 'manualplugin'
 			}

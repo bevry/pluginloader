@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
 'use strict'
 
-module.exports = class DirectPlugin extends require('../baseplugin.js') {
+const BasePlugin = require('../baseplugin.js')
+module.exports = class DirectPlugin extends BasePlugin {
 	constructor(...args) {
 		super(...args)
 		console.log('hello from direct plugin')

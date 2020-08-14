@@ -1,8 +1,8 @@
 // Import
-import * as pathUtil from 'path'
+import { resolve } from 'path'
 import Errlop from 'errlop'
-import satisfies from 'semver/functions/satisfies.js'
-import * as typeChecker from 'typechecker'
+import { satisfies } from 'semver'
+import { isClass } from 'typechecker'
 
 // Local
 const alphanumeric = /^[a-z0-9]+$/
@@ -131,10 +131,7 @@ export default class PluginLoader<BasePlugin> {
 		// load
 		if (!opts.packageData) {
 			if (this.pluginPath) {
-				this.packageData = require(pathUtil.resolve(
-					this.pluginPath,
-					'package.json'
-				))
+				this.packageData = require(resolve(this.pluginPath, 'package.json'))
 			} else {
 				throw new Errlop(
 					"Either the plugin's package data or the plugin's path must be specified."
@@ -205,7 +202,7 @@ export default class PluginLoader<BasePlugin> {
 	protected resolve(
 		direct: BasePlugin | BasePluginResolver<BasePlugin>
 	): BasePlugin {
-		if (typeChecker.isClass(direct)) {
+		if (isClass(direct)) {
 			// module.exports = class MyPlugin extends require('...-baseplugin') {}
 			this.log('debug', `The plugin [${this.pluginPath}] was resolved directly`)
 			return direct as BasePlugin
@@ -220,7 +217,7 @@ export default class PluginLoader<BasePlugin> {
 						err.message
 					)
 				) {
-					// for some reason, typeChecker.isClass(direct) returned `false`, this should not happen
+					// for some reason, isClass(direct) returned `false`, this should not happen
 					this.log(
 						'warn',
 						this.error(
@@ -242,7 +239,7 @@ export default class PluginLoader<BasePlugin> {
 					)
 				}
 			}
-			if (typeChecker.isClass(indirect)) {
+			if (isClass(indirect)) {
 				this.log(
 					'debug',
 					`The plugin [${this.pluginPath}] was resolved indirectly`
