@@ -117,7 +117,7 @@
     }
   },
   "dependencies": {
-    "errlop": "^3.16.0",
+    "errlop": "^4.2.0",
     "semver": "^7.3.2",
     "typechecker": "^7.13.0"
   },
