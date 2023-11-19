@@ -119,7 +119,7 @@
   "dependencies": {
     "errlop": "^3.16.0",
     "semver": "^7.3.2",
-    "typechecker": "^7.13.0"
+    "typechecker": "^8.2.0"
   },
   "devDependencies": {
     "@bevry/update-contributors": "^1.15.0",
