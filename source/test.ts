@@ -4,6 +4,8 @@ import { errorEqual } from 'assert-helpers'
 import kava from 'kava'
 import PluginLoader from './index.js'
 import BasePlugin from '../test-fixtures/baseplugin.js'
+import filedirname from 'filedirname'
+const [file, dir] = filedirname()
 
 // Tests
 kava.suite('pluginloader', function (suite) {
@@ -42,7 +44,7 @@ kava.suite('pluginloader', function (suite) {
 					PluginClass: ManualPlugin,
 				}).create()
 				throw new Error('should not have reached here')
-			} catch (err) {
+			} catch (err: any) {
 				errorEqual(err.stack.toString(), 'must match the specified name of')
 			}
 		})
@@ -81,7 +83,7 @@ kava.suite('pluginloader', function (suite) {
 			PluginLoader.create({
 				BasePlugin,
 				pluginPath: pathUtil.resolve(
-					__dirname,
+					dir,
 					'..',
 					'test-fixtures',
 					'directplugin'
@@ -92,7 +94,7 @@ kava.suite('pluginloader', function (suite) {
 			PluginLoader.create({
 				BasePlugin,
 				pluginPath: pathUtil.resolve(
-					__dirname,
+					dir,
 					'..',
 					'test-fixtures',
 					'indirectplugin'

@@ -1,7 +1,7 @@
 // Import
 import { resolve } from 'path'
 import Errlop from 'errlop'
-import { satisfies } from 'semver'
+import satisfies from 'version-range'
 import { isClass } from 'typechecker'
 
 // Local
@@ -14,7 +14,7 @@ type Log = Function
 type Keywords = string[]
 /** A map of items to their version numbers */
 type Versions = { [item: string]: string | number }
-/** A map of itemsto their version ranges  */
+/** A map of items to their version ranges  */
 type Ranges = { [item: string]: string }
 /** Validated against `process.platform` */
 type Platforms = string[]
@@ -211,7 +211,7 @@ export default class PluginLoader<BasePlugin> {
 			let indirect: BasePlugin
 			try {
 				indirect = (direct as BasePluginResolver<BasePlugin>)(this.BasePlugin)
-			} catch (err) {
+			} catch (err: any) {
 				if (
 					/Class constructor \w+ cannot be invoked without 'new'/.test(
 						err.message
@@ -334,7 +334,7 @@ export default class PluginLoader<BasePlugin> {
 
 			// return the plugin
 			return plugin
-		} catch (err) {
+		} catch (err: any) {
 			throw new Errlop(
 				`Plugin [${this.pluginPath || this.pluginName}] failed to instantiate.`,
 				err

@@ -1,5 +1,11 @@
 # History
 
+## v4.12.0 2023 November 20
+
+-   Updated dependencies, [base files](https://github.com/bevry/base), and [editions](https://editions.bevry.me) using [boundation](https://github.com/bevry/boundation)
+-   Updated license from [`MIT`](http://spdx.org/licenses/MIT.html) to [`Artistic-2.0`](http://spdx.org/licenses/Artistic-2.0.html)
+-   Drop `semver` dependency for [version-range](https://github.com/bevry/version-range) which is a lightweight alternative, with better ecosystem support. This might change some version resolution behaviour, especially with `0.x` and `-prerelease` versions.
+
 ## v4.11.0 2020 August 18
 
 -   Updated dependencies, [base files](https://github.com/bevry/base), and [editions](https://editions.bevry.me) using [boundation](https://github.com/bevry/boundation)
