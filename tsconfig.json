@@ -6,7 +6,8 @@
     "maxNodeModuleJsDepth": 5,
     "moduleResolution": "Node",
     "strict": true,
-    "target": "ES2022"
+    "target": "ES2022",
+    "downlevelIteration": true
   },
   "include": ["source"]
 }
