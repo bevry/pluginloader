@@ -1,11 +1,15 @@
 {
   "name": "@bevry/pluginloader",
-  "version": "4.13.0",
+  "version": "5.0.0",
   "description": "A class for loading, verifying, and creating plugins. Used by DocPad for years.",
   "homepage": "https://github.com/bevry/pluginloader",
   "license": "Artistic-2.0",
   "keywords": [
     "bevry",
+    "deno",
+    "deno-edition",
+    "deno-entry",
+    "denoland",
     "docpad",
     "es2021",
     "es2022",
@@ -72,7 +76,7 @@
     "url": "https://github.com/bevry/pluginloader.git"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=6"
   },
   "editions": [
     {
@@ -102,7 +106,7 @@
       }
     },
     {
-      "description": "TypeScript compiled against ES2021 for Node.js 10 || 12 || 14 || 16 || 18 || 20 || 21 with Require for modules",
+      "description": "TypeScript compiled against ES2021 for Node.js 6 || 8 || 10 || 12 || 14 || 16 || 18 || 20 || 21 with Require for modules",
       "directory": "edition-es2021",
       "entry": "index.js",
       "tags": [
@@ -112,7 +116,7 @@
         "require"
       ],
       "engines": {
-        "node": "10 || 12 || 14 || 16 || 18 || 20 || 21",
+        "node": "6 || 8 || 10 || 12 || 14 || 16 || 18 || 20 || 21",
         "browsers": false
       }
     },
@@ -131,30 +135,31 @@
   "types": "edition-types/index.d.ts",
   "type": "module",
   "main": "index.cjs",
+  "deno": "edition-deno/index.ts",
   "dependencies": {
-    "editions": "^6.13.0",
-    "errlop": "^7.3.0",
+    "editions": "^6.16.0",
+    "errlop": "^7.4.0",
     "typechecker": "^8.5.0",
-    "version-range": "^4.3.0"
+    "version-range": "^4.7.0"
   },
   "devDependencies": {
     "@bevry/update-contributors": "^1.23.0",
-    "@types/node": "^20.9.3",
+    "@types/node": "^20.10.0",
     "@typescript-eslint/eslint-plugin": "^6.12.0",
     "@typescript-eslint/parser": "^6.12.0",
-    "assert-helpers": "^11.5.0",
+    "assert-helpers": "^11.6.0",
     "eslint": "^8.54.0",
-    "eslint-config-bevry": "^5.1.0",
+    "eslint-config-bevry": "^5.2.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "filedirname": "^2.11.0",
-    "kava": "^7.3.0",
+    "filedirname": "^3.1.0",
+    "kava": "^7.4.0",
     "prettier": "^3.1.0",
-    "projectz": "^3.2.0",
+    "projectz": "^3.3.0",
     "surge": "^0.23.1",
     "typedoc": "^0.25.3",
     "typescript": "5.2.2",
-    "valid-directory": "^4.4.0"
+    "valid-directory": "^4.5.0"
   },
   "scripts": {
     "our:clean": "rm -rf ./docs ./edition* ./es2015 ./es5 ./out ./.next",
