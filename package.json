@@ -1,6 +1,6 @@
 {
   "name": "@bevry/pluginloader",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "A class for loading, verifying, and creating plugins. Used by DocPad for years.",
   "homepage": "https://github.com/bevry/pluginloader",
   "license": "Artistic-2.0",
@@ -11,7 +11,7 @@
     "deno-entry",
     "denoland",
     "docpad",
-    "es2021",
+    "es2016",
     "es2022",
     "loader",
     "node",
@@ -106,13 +106,13 @@
       }
     },
     {
-      "description": "TypeScript compiled against ES2021 for Node.js 6 || 8 || 10 || 12 || 14 || 16 || 18 || 20 || 21 with Require for modules",
-      "directory": "edition-es2021",
+      "description": "TypeScript compiled against ES2016 for Node.js 6 || 8 || 10 || 12 || 14 || 16 || 18 || 20 || 21 with Require for modules",
+      "directory": "edition-es2016",
       "entry": "index.js",
       "tags": [
         "compiled",
         "javascript",
-        "es2021",
+        "es2016",
         "require"
       ],
       "engines": {
@@ -137,34 +137,33 @@
   "main": "index.cjs",
   "deno": "edition-deno/index.ts",
   "dependencies": {
-    "editions": "^6.16.0",
-    "errlop": "^7.4.0",
-    "typechecker": "^8.5.0",
-    "version-range": "^4.7.0"
+    "editions": "^6.19.0",
+    "errlop": "^8.2.0",
+    "typechecker": "^9.2.0",
+    "version-range": "^4.11.0"
   },
   "devDependencies": {
     "@bevry/update-contributors": "^1.23.0",
-    "@types/node": "^20.10.0",
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
-    "@typescript-eslint/parser": "^6.12.0",
-    "assert-helpers": "^11.6.0",
-    "eslint": "^8.54.0",
-    "eslint-config-bevry": "^5.2.0",
-    "eslint-config-prettier": "^9.0.0",
+    "@types/node": "^20.10.3",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "assert-helpers": "^11.9.0",
+    "eslint": "^8.55.0",
+    "eslint-config-bevry": "^5.3.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
-    "filedirname": "^3.1.0",
-    "kava": "^7.4.0",
+    "filedirname": "^3.2.0",
+    "kava": "^7.5.0",
     "prettier": "^3.1.0",
-    "projectz": "^3.3.0",
-    "surge": "^0.23.1",
-    "typedoc": "^0.25.3",
-    "typescript": "5.2.2",
-    "valid-directory": "^4.5.0"
+    "projectz": "^3.4.0",
+    "typedoc": "^0.25.4",
+    "typescript": "5.3.2",
+    "valid-directory": "^4.6.0"
   },
   "scripts": {
     "our:clean": "rm -rf ./docs ./edition* ./es2015 ./es5 ./out ./.next",
-    "our:compile": "npm run our:compile:edition-es2021 && npm run our:compile:edition-es2022 && npm run our:compile:edition-types",
-    "our:compile:edition-es2021": "tsc --module commonjs --target ES2021 --outDir ./edition-es2021 --project tsconfig.json && ( test ! -d edition-es2021/source || ( mv edition-es2021/source edition-temp && rm -rf edition-es2021 && mv edition-temp edition-es2021 ) ) && printf '%s' '{\"type\": \"commonjs\"}' > edition-es2021/package.json",
+    "our:compile": "npm run our:compile:edition-es2016 && npm run our:compile:edition-es2022 && npm run our:compile:edition-types",
+    "our:compile:edition-es2016": "tsc --module commonjs --target ES2016 --outDir ./edition-es2016 --project tsconfig.json && ( test ! -d edition-es2016/source || ( mv edition-es2016/source edition-temp && rm -rf edition-es2016 && mv edition-temp edition-es2016 ) ) && printf '%s' '{\"type\": \"commonjs\"}' > edition-es2016/package.json",
     "our:compile:edition-es2022": "tsc --module commonjs --target ES2022 --outDir ./edition-es2022 --project tsconfig.json && ( test ! -d edition-es2022/source || ( mv edition-es2022/source edition-temp && rm -rf edition-es2022 && mv edition-temp edition-es2022 ) ) && printf '%s' '{\"type\": \"commonjs\"}' > edition-es2022/package.json",
     "our:compile:edition-types": "tsc --emitDeclarationOnly --declaration --declarationMap --declarationDir ./edition-types --project tsconfig.json && ( test ! -d edition-types/source || ( mv edition-types/source edition-temp && rm -rf edition-types && mv edition-temp edition-types ) )",
     "our:deploy": "printf '%s\n' 'no need for this project'",
@@ -196,7 +195,8 @@
   "prettier": {
     "semi": false,
     "singleQuote": true,
-    "trailingComma": "es5"
+    "trailingComma": "all",
+    "endOfLine": "lf"
   },
   "boundation": {
     "sourceModule": false

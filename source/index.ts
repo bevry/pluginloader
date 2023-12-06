@@ -48,8 +48,8 @@ function checkVersions(versions: Versions, ranges: Ranges, group: string) {
 				if (range && satisfies(version, range) === false) {
 					errors.push(
 						new Errlop(
-							`${group} [${thing} = ${range}] unsupported by plugin's range [${range}]`
-						)
+							`${group} [${thing} = ${range}] unsupported by plugin's range [${range}]`,
+						),
 					)
 				}
 			}
@@ -134,7 +134,7 @@ export default class PluginLoader<BasePlugin> {
 				this.packageData = require(resolve(this.pluginPath, 'package.json'))
 			} else {
 				throw new Errlop(
-					"Either the plugin's package data or the plugin's path must be specified."
+					"Either the plugin's package data or the plugin's path must be specified.",
 				)
 			}
 		} else {
@@ -144,7 +144,7 @@ export default class PluginLoader<BasePlugin> {
 		// validate
 		if (!this.packageData.name) {
 			throw new Errlop(
-				'The plugin\'s package data must include a "name" field.'
+				'The plugin\'s package data must include a "name" field.',
 			)
 		}
 
@@ -165,13 +165,13 @@ export default class PluginLoader<BasePlugin> {
 				this.pluginName = this.pluginName.substr(this.prefix.length)
 			} else {
 				throw new Errlop(
-					`The plugin's name of [${this.pluginName}] must begin with the prefix [${this.prefix}].`
+					`The plugin's name of [${this.pluginName}] must begin with the prefix [${this.prefix}].`,
 				)
 			}
 		}
 		if (alphanumeric.test(this.pluginName) === false) {
 			throw new Errlop(
-				`The plugin's name of [${this.pluginName}] must be alphanumeric to avoid common naming problems.`
+				`The plugin's name of [${this.pluginName}] must be alphanumeric to avoid common naming problems.`,
 			)
 		}
 
@@ -181,7 +181,7 @@ export default class PluginLoader<BasePlugin> {
 		 * @type {BasePlugin}
 		 */
 		this.PluginClass = this.resolve(
-			opts.PluginClass || require(this.pluginPath as string)
+			opts.PluginClass || require(this.pluginPath as string),
 		)
 
 		// Validate
@@ -200,7 +200,7 @@ export default class PluginLoader<BasePlugin> {
 	 * @throws {Errlop} resolve failure reason
 	 */
 	protected resolve(
-		direct: BasePlugin | BasePluginResolver<BasePlugin>
+		direct: BasePlugin | BasePluginResolver<BasePlugin>,
 	): BasePlugin {
 		if (isClass(direct)) {
 			// module.exports = class MyPlugin extends require('...-baseplugin') {}
@@ -214,7 +214,7 @@ export default class PluginLoader<BasePlugin> {
 			} catch (err: any) {
 				if (
 					/Class constructor \w+ cannot be invoked without 'new'/.test(
-						err.message
+						err.message,
 					)
 				) {
 					// for some reason, isClass(direct) returned `false`, this should not happen
@@ -224,30 +224,30 @@ export default class PluginLoader<BasePlugin> {
 							'pluginloader encountered a direct result that had a false negative with class detection\n' +
 								'everything will work fine, but this should be fixed by the plugin author\n' +
 								'the direct result in question is:\n' +
-								(direct as any).toString()
-						)
+								(direct as any).toString(),
+						),
 					)
 					this.log(
 						'debug',
-						`The plugin [${this.pluginPath}] was resolved directly, via false negative fallback`
+						`The plugin [${this.pluginPath}] was resolved directly, via false negative fallback`,
 					)
 					return direct as BasePlugin
 				} else {
 					throw this.error(
 						'The indirect resolution of the PluginClass failed.',
-						err
+						err,
 					)
 				}
 			}
 			if (isClass(indirect)) {
 				this.log(
 					'debug',
-					`The plugin [${this.pluginPath}] was resolved indirectly`
+					`The plugin [${this.pluginPath}] was resolved indirectly`,
 				)
 				return indirect
 			} else {
 				throw this.error(
-					'The resolved PluginClass was not detectable as a class.'
+					'The resolved PluginClass was not detectable as a class.',
 				)
 			}
 		}
@@ -267,8 +267,8 @@ export default class PluginLoader<BasePlugin> {
 				new Errlop(
 					`keyword [${
 						this.keyword
-					}] missing from the plugin's keywords [${keywords.join(', ')}]`
-				)
+					}] missing from the plugin's keywords [${keywords.join(', ')}]`,
+				),
 			)
 		}
 		if (platforms.length && platforms.includes(process.platform) === false) {
@@ -276,8 +276,8 @@ export default class PluginLoader<BasePlugin> {
 				new Errlop(
 					`platform [${
 						process.platform
-					}] unsupported by plugin's engines [${platforms.join(', ')}]`
-				)
+					}] unsupported by plugin's engines [${platforms.join(', ')}]`,
+				),
 			)
 		}
 		if (engines) {
@@ -286,7 +286,7 @@ export default class PluginLoader<BasePlugin> {
 		}
 		if (peerDependencies) {
 			errors.push(
-				...checkVersions(this.versions, peerDependencies, 'peer dependency')
+				...checkVersions(this.versions, peerDependencies, 'peer dependency'),
 			)
 		}
 
@@ -295,7 +295,7 @@ export default class PluginLoader<BasePlugin> {
 				`Plugin [${this.pluginPath}] is unsupported.`,
 				errors.length === 1
 					? errors[0]
-					: new Errlop(errors.map((error) => error.stack).join('\n'))
+					: new Errlop(errors.map((error) => error.stack).join('\n')),
 			)
 		}
 
@@ -306,7 +306,7 @@ export default class PluginLoader<BasePlugin> {
 	protected error(message: string, parent?: Error) {
 		return new Errlop(
 			`${message}\nPlugin: ${this.pluginPath || this.pluginName}`,
-			parent
+			parent,
 		)
 	}
 
@@ -328,7 +328,7 @@ export default class PluginLoader<BasePlugin> {
 			// ensure name is correct if specified
 			if (plugin.name && plugin.name !== this.pluginName) {
 				throw new Error(
-					`The plugin instance's "name" of [${plugin.name}] must match the specified name of [${this.pluginName}].`
+					`The plugin instance's "name" of [${plugin.name}] must match the specified name of [${this.pluginName}].`,
 				)
 			}
 
@@ -337,7 +337,7 @@ export default class PluginLoader<BasePlugin> {
 		} catch (err: any) {
 			throw new Errlop(
 				`Plugin [${this.pluginPath || this.pluginName}] failed to instantiate.`,
-				err
+				err,
 			)
 		}
 	}

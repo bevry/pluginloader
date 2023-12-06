@@ -86,7 +86,7 @@ kava.suite('pluginloader', function (suite) {
 					dir,
 					'..',
 					'test-fixtures',
-					'directplugin'
+					'directplugin',
 				),
 			}).create()
 		})
@@ -97,7 +97,7 @@ kava.suite('pluginloader', function (suite) {
 					dir,
 					'..',
 					'test-fixtures',
-					'indirectplugin'
+					'indirectplugin',
 				),
 			}).create()
 		})
